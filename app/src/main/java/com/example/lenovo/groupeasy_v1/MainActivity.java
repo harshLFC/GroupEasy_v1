@@ -1,4 +1,4 @@
-package com.example.lenovo.mychat;
+package com.example.lenovo.groupeasy_v1;
 
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;

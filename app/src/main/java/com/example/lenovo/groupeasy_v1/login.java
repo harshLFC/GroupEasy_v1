@@ -56,7 +56,7 @@ public class login extends AppCompatActivity implements
 
         // Button listeners
         findViewById(R.id.sign_in_button).setOnClickListener(this);
-        findViewById(R.id.sign_out_button).setOnClickListener(this);
+        findViewById(R.id.go_to_chat).setOnClickListener(this);
         findViewById(R.id.disconnect_button).setOnClickListener(this);
 
         // [START config_signin]
@@ -117,7 +117,7 @@ public class login extends AppCompatActivity implements
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         // [START_EXCLUDE silent]
-        final ProgressDialog pDialog = ProgressDialog.show(login.this, "MY Dialog", "Please wait...");
+        final ProgressDialog pDialog = ProgressDialog.show(login.this, "Fetching Information", "Please wait...");
 //        showProgressDialog();
         // [END_EXCLUDE]
 
@@ -161,18 +161,21 @@ public class login extends AppCompatActivity implements
     }
     // [END signin]
 
-    private void signOut() {
-        // Firebase sign out
-        mAuth.signOut();
+    private void goToChat() {
 
-        // Google sign out
-        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(@NonNull Status status) {
-                        updateUI(null);
-                    }
-                });
+        Intent i = new Intent(login.this, MainActivity.class);
+        startActivity(i);
+//        // Firebase sign out
+//        mAuth.signOut();
+//
+//        // Google sign out
+//        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+//                new ResultCallback<Status>() {
+//                    @Override
+//                    public void onResult(@NonNull Status status) {
+//                        updateUI(null);
+//                    }
+//                });
     }
 
     private void revokeAccess() {
@@ -221,8 +224,8 @@ public class login extends AppCompatActivity implements
         int i = v.getId();
         if (i == R.id.sign_in_button) {
             signIn();
-        } else if (i == R.id.sign_out_button) {
-            signOut();
+        } else if (i == R.id.go_to_chat) {
+            goToChat();
         } else if (i == R.id.disconnect_button) {
             revokeAccess();
         }
