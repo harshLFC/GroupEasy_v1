@@ -27,13 +27,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/title_bottom_margin"
-            android:text="@string/google_title_text"
+            android:text="@string/welcome"
             android:theme="@style/ThemeOverlay.MyTitleText" />
 
         <TextView
             android:id="@+id/status"
             style="@style/ThemeOverlay.MyTextDetail"
-            android:text="@string/signed_out" />
+            android:text="@string/Not_logged_in"
+            />
 
         <TextView
             android:id="@+id/detail"
@@ -51,12 +52,11 @@
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button"
-            android:layout_width="wrap_content"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="visible"
-            tools:visibility="gone" />
-
+            android:visibility="gone"
+            />
         <LinearLayout
             android:id="@+id/sign_out_and_disconnect"
             android:layout_width="fill_parent"
