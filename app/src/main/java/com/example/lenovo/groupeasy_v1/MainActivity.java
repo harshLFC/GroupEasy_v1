@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         sndBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+//                todo change name
                 chatMessage chat = new chatMessage("harsh",msgText.getText().toString());
 //                myRef.setValue(chat);
                 myRef.push().setValue(chat);

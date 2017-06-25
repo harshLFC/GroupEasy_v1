@@ -56,4 +56,11 @@
     <!-- Server Client ID.  This should be a valid Web OAuth 2.0 Client ID obtained
          from https://console.developers.google.com/ -->
     <string name="server_client_id">YOUR_SERVER_CLIENT_ID</string>
+    <string name="title_activity_my_tab">myTabActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="go_to_tab">Go to tab</string>
+    <string name="tab3_contacts">Tab3 contacts</string>
+    <string name="tab2_chat_page">Tab2 Chat Page</string>
+    <string name="tab1_main_page">Tab1 Main Page</string>
 </resources>

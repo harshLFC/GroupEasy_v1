@@ -58,14 +58,20 @@ public class login extends AppCompatActivity implements
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.go_to_chat).setOnClickListener(this);
         findViewById(R.id.disconnect_button).setOnClickListener(this);
+        findViewById(R.id.button2).setOnClickListener(this);
+
+
 
         // [START config_signin]
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
+                .requestId()
+                .requestProfile()
                 .build();
         // [END config_signin]
+        //destroy
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
@@ -161,6 +167,13 @@ public class login extends AppCompatActivity implements
     }
     // [END signin]
 
+    private void button2()  {
+        Intent i = new Intent(login.this, myTabActivity.class
+        );
+        startActivity(i);
+
+    }
+
     private void goToChat() {
 
         Intent i = new Intent(login.this, MainActivity.class);
@@ -198,7 +211,8 @@ public class login extends AppCompatActivity implements
         if (user != null) {
 
             mStatusTextView.setText(getString(R.string.google_status_fmt, user.getEmail()));
-            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
+            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()) );
+//            mDetailTextView.setText("Firebase User: {user.getUid(}");
 
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
@@ -228,6 +242,9 @@ public class login extends AppCompatActivity implements
             goToChat();
         } else if (i == R.id.disconnect_button) {
             revokeAccess();
+        }
+        else    if (i == R.id.button2){
+            button2();
         }
     }
 }
