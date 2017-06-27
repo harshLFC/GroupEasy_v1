@@ -1,8 +1,10 @@
 package com.example.lenovo.groupeasy_v1;
 
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -11,9 +13,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.lenovo.groupeasy_v1.R;
-import com.example.lenovo.groupeasy_v1.chatMessage;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,21 +21,26 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.zip.Inflater;
 
-public class MainActivity extends AppCompatActivity {
+/**
+ * Created by lenovo on 26-06-2017.
+ */
+
+public class Tab2_Chat extends Fragment {
+    // variables
+    private final List<chatMessage> messages = new LinkedList<>();
+    private Context mContext;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        mContext = getActivity();
+        View rootView = inflater.inflate(R.layout.activity_main, container, false);
 
-//        Button sndBtn = findViewById(R.id.sendButton);
-//        EditText messageText = findViewById(R.id.messageText);
-//        ListView msgList = findViewById(R.id.messagesList);
-
-        Button sndBtn = (Button) findViewById(R.id.sendButton);
-        final EditText msgText = (EditText) findViewById(R.id.messageText);
-        ListView msgList = (ListView) findViewById(R.id.messagesList);
+        Button sndBtn = (Button) rootView.findViewById(R.id.sendButton);
+        final EditText msgText = (EditText) rootView.findViewById(R.id.messageText);
+        ListView msgList = (ListView) rootView.findViewById(R.id.messagesList);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference("message");
@@ -55,15 +59,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        final List<chatMessage> messages = new LinkedList<>();
+        // adapter
         final ArrayAdapter<chatMessage> adapter = new ArrayAdapter<chatMessage>(
-                this, android.R.layout.two_line_list_item, messages
+                mContext, android.R.layout.two_line_list_item, messages
         ){
             @NonNull
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
+                LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 if (convertView == null){
-                    convertView = getLayoutInflater().inflate(android.R.layout.two_line_list_item, parent, false);
+                    convertView = inflater.inflate(android.R.layout.two_line_list_item, parent, false);
                 }
                 chatMessage chat = messages.get(position);
                 ((TextView)convertView.findViewById(android.R.id.text1)).setText(chat.getName());
@@ -71,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 return convertView;
             }
         };
+
         msgList.setAdapter(adapter);
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -103,5 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        return rootView;
     }
+
 }

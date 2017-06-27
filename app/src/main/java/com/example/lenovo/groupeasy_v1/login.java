@@ -64,6 +64,8 @@ public class login extends AppCompatActivity implements
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
+                .requestId()
+                .requestProfile()
                 .build();
         // [END config_signin]
 
@@ -198,7 +200,8 @@ public class login extends AppCompatActivity implements
         if (user != null) {
 
             mStatusTextView.setText(getString(R.string.google_status_fmt, user.getEmail()));
-            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
+            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()) );
+//            mDetailTextView.setText("Firebase User: {user.getUid(}");
 
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
