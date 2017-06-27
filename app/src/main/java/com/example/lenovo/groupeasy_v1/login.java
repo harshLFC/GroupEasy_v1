@@ -165,7 +165,7 @@ public class login extends AppCompatActivity implements
 
     private void goToChat() {
 
-        Intent i = new Intent(login.this, MainActivity.class);
+        Intent i = new Intent(login.this, myTab.class);
         startActivity(i);
 //        // Firebase sign out
 //        mAuth.signOut();

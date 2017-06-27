@@ -45,17 +45,13 @@ public class Tab2_Chat extends Fragment {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference("message");
 
-
         sndBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                todo change name
                 chatMessage chat = new chatMessage("harsh",msgText.getText().toString());
-//                myRef.setValue(chat);
                 myRef.push().setValue(chat);
                 msgText.setText("");
-//                msgText.setText("");
-//                ref.push().setValue(chat);
             }
         });
 
