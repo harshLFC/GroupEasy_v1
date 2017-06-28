@@ -14,7 +14,7 @@ public class Tab3_Contacts extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.tab3_contacts, container, false);
+        View rootView = inflater.inflate(R.layout.chat_rooms, container, false);
         return rootView;
     }
 }
