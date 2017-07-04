@@ -240,4 +240,9 @@ public class login extends AppCompatActivity implements
             revokeAccess();
         }
     }
+
+    public void GoToApp(View view) {
+        Intent i = new Intent(login.this, myTab.class);
+        startActivity(i);
+    }
 }

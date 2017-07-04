@@ -12,7 +12,10 @@
         android:id="@+id/section_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Main Page"/>
+        android:text="Main Page"
+        android:layout_above="@+id/imageButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="27dp" />
 
     <!--<android.support.design.widget.FloatingActionButton-->
         <!--android:layout_width="350dp"-->
@@ -25,7 +28,8 @@
         android:background="@android:color/transparent"
         android:hapticFeedbackEnabled="true"
         android:src="@drawable/button_main"
-        android:layout_below="@+id/section_label"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="83dp" />
+        android:layout_marginBottom="95dp"
+        android:id="@+id/imageButton" />
 </RelativeLayout>
