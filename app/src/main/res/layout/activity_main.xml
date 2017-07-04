@@ -11,36 +11,34 @@
     tools:context="com.example.lenovo.groupeasy_v1.MainActivity">
 
 
-    <LinearLayout
+    <!--LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:id="@+id/footer">
+    </LinearLayout!-->
 
-
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="411dp"
-            android:id="@+id/messagesList"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-
-    </LinearLayout>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:id="@+id/messagesList"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:text="Send"
         android:layout_width="89dp"
         android:layout_height="wrap_content"
         android:id="@+id/sendButton"
-        android:layout_alignParentBottom="true"
+        android:theme="@style/ThemeOverlay.MyLightButton"
+        android:layout_below="@+id/messagesList"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:theme="@style/ThemeOverlay.MyLightButton"/>
+        android:layout_marginTop="11dp" />
 
     <EditText
-        android:layout_width="107dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
@@ -49,4 +47,5 @@
         android:layout_toLeftOf="@+id/sendButton"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
 </RelativeLayout>

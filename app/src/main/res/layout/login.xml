@@ -16,11 +16,11 @@
         android:orientation="vertical">
 
         <ImageView
-            style="@style/ThemeOverlay.FirebaseIcon"
             android:id="@+id/google_icon"
-            android:contentDescription="@string/desc_firebase_lockup"
+            style="@style/ThemeOverlay.FirebaseIcon"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/desc_firebase_lockup" />
 
         <TextView
             android:id="@+id/title_text"
@@ -28,13 +28,14 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/title_bottom_margin"
             android:text="@string/welcome"
-            android:theme="@style/ThemeOverlay.MyTitleText" />
+            android:theme="@style/ThemeOverlay.MyTitleText"
+            android:onClick="GoToApp"
+            android:clickable="true"/>
 
         <TextView
             android:id="@+id/status"
             style="@style/ThemeOverlay.MyTextDetail"
-            android:text="@string/Not_logged_in"
-            />
+            android:text="@string/Not_logged_in" />
 
         <TextView
             android:id="@+id/detail"
@@ -43,30 +44,52 @@
 
     </LinearLayout>
 
+    <!--RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+    <View android:id="@+id/rectangle_at_the_top"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimaryDark"
+        android:visibility="visible"/>
+    </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/button_layout"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#FFF">
+        android:layout_gravity="center"
+        android:background="#FFF"!-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="78dp"
+        android:layout_weight="0.92">
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button"
-            android:layout_width="250dp"
+            android:layout_width="340dp"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="gone"
-            />
+            android:visibility="visible"
+            android:layout_above="@+id/sign_out_and_disconnect"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp" />
+
         <LinearLayout
             android:id="@+id/sign_out_and_disconnect"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:orientation="horizontal"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:visibility="gone"
-            tools:visibility="visible">
+
+            tools:visibility="visible"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="23dp">
 
             <Button
                 android:id="@+id/go_to_chat"
@@ -84,7 +107,7 @@
                 android:text="@string/disconnect"
                 android:theme="@style/ThemeOverlay.MyDarkButton" />
         </LinearLayout>
-
     </RelativeLayout>
+    <!--/RelativeLayout!-->
 
 </LinearLayout>

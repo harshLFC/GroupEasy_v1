@@ -23,7 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class chatroom extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

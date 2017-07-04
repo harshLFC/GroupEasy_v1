@@ -4,9 +4,12 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,6 +67,8 @@ public class login extends AppCompatActivity implements
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
+                .requestId()
+                .requestProfile()
                 .build();
         // [END config_signin]
 
@@ -75,6 +80,10 @@ public class login extends AppCompatActivity implements
         // [START initialize_auth]
         mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
+
+//        Trying to make page full screen
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     // [START on_start_check_user]
@@ -163,7 +172,7 @@ public class login extends AppCompatActivity implements
 
     private void goToChat() {
 
-        Intent i = new Intent(login.this, MainActivity.class);
+        Intent i = new Intent(login.this, myTab.class);
         startActivity(i);
 //        // Firebase sign out
 //        mAuth.signOut();
@@ -198,7 +207,8 @@ public class login extends AppCompatActivity implements
         if (user != null) {
 
             mStatusTextView.setText(getString(R.string.google_status_fmt, user.getEmail()));
-            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
+            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()) );
+//            mDetailTextView.setText("Firebase User: {user.getUid(}");
 
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
@@ -229,5 +239,10 @@ public class login extends AppCompatActivity implements
         } else if (i == R.id.disconnect_button) {
             revokeAccess();
         }
+    }
+
+    public void GoToApp(View view) {
+        Intent i = new Intent(login.this, myTab.class);
+        startActivity(i);
     }
 }
