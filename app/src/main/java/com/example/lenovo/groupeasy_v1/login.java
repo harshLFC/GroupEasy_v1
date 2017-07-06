@@ -2,6 +2,7 @@ package com.example.lenovo.groupeasy_v1;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +30,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.UserInfo;
 
 
 /**
@@ -47,15 +50,23 @@ public class login extends AppCompatActivity implements
     private GoogleApiClient mGoogleApiClient;
     private TextView mStatusTextView;
     private TextView mDetailTextView;
+    private TextView userName;
+    private TextView eMail;
+    private ImageView userPhoto;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
         // Views
         mStatusTextView = (TextView) findViewById(R.id.status);
         mDetailTextView = (TextView) findViewById(R.id.detail);
+        userName = (TextView) findViewById(R.id.userName);
+        eMail = (TextView) findViewById(R.id.eMail);
+        userPhoto = (ImageView) findViewById(R.id.userPhoto);
 
         // Button listeners
         findViewById(R.id.sign_in_button).setOnClickListener(this);
@@ -88,17 +99,36 @@ public class login extends AppCompatActivity implements
 
     // [START on_start_check_user]
     @Override
-    public void onStart() {
+    public void onStart()
+    {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
+
+// Get user Provider profile information
+        if (currentUser != null) {
+            for (UserInfo profile : currentUser.getProviderData()) {
+                // Id of the provider (ex: google.com)
+                String providerId = profile.getProviderId();
+
+                // UID specific to the provider
+                String uid = profile.getUid();
+
+                // Name, email address, and profile photo Url
+//                String name = profile.getDisplayName();
+                String email = profile.getEmail();
+                Uri photoUrl = profile.getPhotoUrl();
+            }
+        }
+
         updateUI(currentUser);
     }
     // [END on_start_check_user]
 
     // [START onactivityresult]
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
@@ -112,18 +142,21 @@ public class login extends AppCompatActivity implements
 //                Intent i = new Intent(login.this, MainActivity.class);
 //                startActivity(i);
 
-            } else {
+            }
+            else
+                {
                 // Google Sign In failed, update UI appropriately
                 // [START_EXCLUDE]
                 updateUI(null);
                 // [END_EXCLUDE]
-            }
+                }
         }
     }
     // [END onactivityresult]
 
     // [START auth_with_google]
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct)
+    {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         // [START_EXCLUDE silent]
         final ProgressDialog pDialog = ProgressDialog.show(login.this, "Fetching Information", "Please wait...");
@@ -132,22 +165,26 @@ public class login extends AppCompatActivity implements
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>()
+                {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
+                    public void onComplete(@NonNull Task<AuthResult> task)
+                    {
+                        if (task.isSuccessful())
+                        {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
 
-                        } else {
+                        } else
+                            {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(login.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
-                        }
+                            }
 
                         // [START_EXCLUDE]
                         pDialog.hide();
@@ -161,7 +198,8 @@ public class login extends AppCompatActivity implements
     // [END auth_with_google]
 
     // [START signin]
-    private void signIn() {
+    private void signIn()
+    {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
 //        Intent i = new Intent(getApplicationContext(), MainActivity.class);
@@ -170,8 +208,8 @@ public class login extends AppCompatActivity implements
     }
     // [END signin]
 
-    private void goToChat() {
-
+    private void goToChat()
+    {
         Intent i = new Intent(login.this, myTab.class);
         startActivity(i);
 //        // Firebase sign out
@@ -187,32 +225,41 @@ public class login extends AppCompatActivity implements
 //                });
     }
 
-    private void revokeAccess() {
+    private void revokeAccess()
+    {
         // Firebase sign out
         mAuth.signOut();
 
         // Google revoke access
-        Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
+        Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback
+                (
+                new ResultCallback<Status>()
+                {
                     @Override
-                    public void onResult(@NonNull Status status) {
+                    public void onResult(@NonNull Status status)
+                    {
                         updateUI(null);
                     }
                 });
     }
 
-    private void updateUI(FirebaseUser user) {
+    private void updateUI(FirebaseUser user)
+    {
 //        pDialog.hide();
 //        hideProgressDialog();
-        if (user != null) {
-
+        if (user != null)
+        {
             mStatusTextView.setText(getString(R.string.google_status_fmt, user.getEmail()));
             mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()) );
+            userName.setText(getString(R.string.google_status_fmt, user.getDisplayName()));
 //            mDetailTextView.setText("Firebase User: {user.getUid(}");
 
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
-        } else {
+            findViewById(R.id.userName).setVisibility(View.VISIBLE);
+        }
+        else
+        {
             mStatusTextView.setText(R.string.Not_logged_in);
             mDetailTextView.setText(null);
 
@@ -222,7 +269,8 @@ public class login extends AppCompatActivity implements
     }
 
     @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult)
+    {
         // An unresolvable error has occurred and Google APIs (including Sign-In) will not
         // be available.
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
@@ -230,18 +278,25 @@ public class login extends AppCompatActivity implements
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
         int i = v.getId();
-        if (i == R.id.sign_in_button) {
+        if (i == R.id.sign_in_button)
+        {
             signIn();
-        } else if (i == R.id.go_to_chat) {
+        }
+        else if (i == R.id.go_to_chat)
+        {
             goToChat();
-        } else if (i == R.id.disconnect_button) {
+        }
+        else if (i == R.id.disconnect_button)
+        {
             revokeAccess();
         }
     }
 
-    public void GoToApp(View view) {
+    public void GoToApp(View view)
+    {
         Intent i = new Intent(login.this, myTab.class);
         startActivity(i);
     }

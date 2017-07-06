@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
@@ -24,6 +25,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,153 +36,93 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Created by lenovo on 26-06-2017.
- */
-
 public class Tab3_Contacts extends Fragment {
+    // variables
+    private final List<chatMessage> messages = new LinkedList<>();
+    private Context mContext;
 
-//initilize elements
-    private final List<String> rooms = new ArrayList<>();
-    private Button btn ;
-    private ListView msgList;
-    private TextInputLayout bg;
-    Animation fab_close,fab_open,fab_rotate,fab_rotate_rev;
-    boolean isOpen = false;
-
+    //on create
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final Context mcontext = getActivity();
-        final View rootView = inflater.inflate(R.layout.chat_rooms, container, false);
+        mContext = getActivity();
+        View rootView = inflater.inflate(R.layout.activity_main, container, false);
 
-//find view by id of gui elements
-        btn = (Button) rootView.findViewById(R.id.buttonhide);
-        msgList = (ListView) rootView.findViewById(R.id.lvToDoList);
-        bg = (TextInputLayout) rootView.findViewById(R.id.bg);
+//       Referancing ui elements
+        Button sndBtn = (Button) rootView.findViewById(R.id.sendButton);
+        final EditText msgText = (EditText) rootView.findViewById(R.id.messageText);
+        ListView msgList = (ListView) rootView.findViewById(R.id.messagesList);
 
-//Create instance and connect to firebase database
+//        FIrebase datatbase ref
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference myRef = database.getReference("Groups");
+        final DatabaseReference myRef = database.getReference("message");
 
-//initialize animations and fab
-        final FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab1);
-       final FloatingActionButton fab2 = (FloatingActionButton) rootView.findViewById(R.id.fab2);
-       final Animation fab_close = AnimationUtils.loadAnimation(mcontext.getApplicationContext(),R.anim.fab_close);
-       final Animation fab_open = AnimationUtils.loadAnimation(mcontext.getApplicationContext(),R.anim.fab_open);
-       final Animation fab_rotate = AnimationUtils.loadAnimation(mcontext.getApplicationContext(),R.anim.fab_rotate);
-       final Animation fab_rotate_rev = AnimationUtils.loadAnimation(mcontext.getApplicationContext(),R.anim.fab_rotate_rev);
-
-        fab.setOnClickListener(new View.OnClickListener() {
+        sndBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View view) {
-
-                final EditText edittext = (EditText) rootView.findViewById(R.id.edittext);
-
-//code for sending data to database on click
-                btn.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v) {
-                        Map<String,Object> map = new HashMap<>();
-                        map.put(edittext.getText().toString(),"");
-                        myRef.updateChildren(map);
-                    }
-                });
-
-//animation for fab
-                if (isOpen)
-                {
-
-                    fab2.startAnimation(fab_close);
-                    fab.startAnimation(fab_rotate_rev);
-                    fab2.setClickable(false);
-                    isOpen= false;
-                    fab2.setVisibility(View.VISIBLE);
-
-// Set on click listner for the second fab
-                    fab2.setOnClickListener(new  View.OnClickListener(){
-                        @Override
-                        public void onClick(View v){
-// Set up an Alert dialog builder
-                            AlertDialog.Builder builder = new AlertDialog.Builder(mcontext);
-                            builder.setTitle("Create new Group");
-// Set up the input
-                            final EditText input = new EditText(mcontext);
-// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-                            input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_TEXT);
-                            builder.setView(input);
-// Set up the buttons
-                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    String mText = input.getText().toString();
-                                    Map<String,Object> map = new HashMap<>();
-                                    map.put(input.getText().toString(),"");
-                                    myRef.updateChildren(map);
-                                }
-                            });
-                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            });
-                            builder.show();
-                        }
-                    });
-                }
-                else{
-                    fab2.startAnimation(fab_open);
-                    fab.startAnimation(fab_rotate);
-                    fab2.setClickable(true);
-                    isOpen= true;
-                    fab2.setVisibility(View.GONE);
-                    }
-//Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//.setAction("Action", null).show();
+            public void onClick(View view) {
+//                todo change name
+                chatMessage chat = new chatMessage("harsh", msgText.getText().toString());
+                myRef.push().setValue(chat);
+                msgText.setText("");
             }
         });
-
-        ArrayAdapter adapter = new ArrayAdapter<String>(mcontext,android.R.layout.simple_list_item_1,rooms);
-//final ListAdapter adapter = null;
-        msgList.setAdapter(adapter);
-        myRef.addValueEventListener(new ValueEventListener() {
+// adapter
+        final ArrayAdapter<chatMessage> adapter = new ArrayAdapter<chatMessage>(
+                mContext, android.R.layout.two_line_list_item, messages
+        )
+// Code to Populate List view
+        {
+            @NonNull
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                Set<String> set = new HashSet<String>();
-                Iterator i = dataSnapshot.getChildren().iterator();
-
-                while (i.hasNext()){
-                    set.add(((DataSnapshot)i.next()).getKey());
+            public View getView(int position, View convertView, ViewGroup parent) {
+                LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                if (convertView == null) {
+                    convertView = inflater.inflate(android.R.layout.two_line_list_item, parent, false);
                 }
-                rooms.clear();
-                rooms.addAll(set);
+                chatMessage chat = messages.get(position);
+                ((TextView) convertView.findViewById(android.R.id.text1)).setText(chat.getName());
+                ((TextView) convertView.findViewById(android.R.id.text2)).setText(chat.getMessage());
+                return convertView;
             }
+        };
+
+        msgList.setAdapter(adapter);
+        myRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                chatMessage chat = dataSnapshot.getValue(chatMessage.class);
+                messages.add(chat);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                chatMessage chat = dataSnapshot.getValue(chatMessage.class);
+//                        messages.add(chat);
+                messages.remove(chat);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
-
-        msgList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(mcontext,chatroom.class);
-                startActivity(i);
-            }
-        });
-
         return rootView;
-    }
-
-    public Dialog onCreateDialog(Bundle savedInstanceState){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        return builder.create();
     }
 }

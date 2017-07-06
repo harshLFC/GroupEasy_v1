@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class myTab extends AppCompatActivity {
 
@@ -83,6 +84,9 @@ public class myTab extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Toast.makeText(this, "Settings selected", Toast.LENGTH_LONG
+            )
+                    .show();
             return true;
         }
 
