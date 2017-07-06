@@ -48,15 +48,17 @@ public class chatroom extends AppCompatActivity
 //        ActionBar actionBar = getActionBar();
 //        actionBar.setDisplayHomeAsUpEnabled(true);
 
-
+// On click listner for 'send' button
         sndBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
+// if entered string is null a tost will prompt
                 if(msgText.getText().toString().isEmpty()){
                     Toast.makeText(chatroom.this, "You have entered nothing", Toast.LENGTH_SHORT).show();
                 }
+// else the entered string will be pushed to the firebase database reference
                 else {
 //                    todo change name
                     chatMessage chat = new chatMessage("harsh", msgText.getText().toString());
