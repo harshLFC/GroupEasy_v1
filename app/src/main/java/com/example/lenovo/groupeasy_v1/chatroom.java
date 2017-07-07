@@ -27,6 +27,7 @@ import java.util.List;
 
 public class chatroom extends AppCompatActivity
 {
+    private String room_name;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -41,6 +42,10 @@ public class chatroom extends AppCompatActivity
         Button sndBtn = (Button) findViewById(R.id.sendButton);
         final EditText msgText = (EditText) findViewById(R.id.messageText);
         ListView msgList = (ListView) findViewById(R.id.messagesList);
+
+// get room name from last intent and override the chatroom title
+        room_name = getIntent().getExtras().get("room_name").toString();
+        setTitle(room_name);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference("message");

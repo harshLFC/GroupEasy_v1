@@ -172,6 +172,8 @@ public class Tab2_Chat extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent i = new Intent(mcontext,chatroom.class);
+                i.putExtra("room_name",((TextView)view).getText().toString());
+
                 startActivity(i);
             }
         });

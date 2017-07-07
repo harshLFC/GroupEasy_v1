@@ -118,6 +118,12 @@ public class login extends AppCompatActivity implements
 //                String name = profile.getDisplayName();
                 String email = profile.getEmail();
                 Uri photoUrl = profile.getPhotoUrl();
+
+// attempt to send username data to fragment
+//                Bundle bundle = new Bundle();
+//                bundle.putString(uid,"From Activity");
+//                Fragmentclass frag = new Fragmentclass;
+//                frag.setArguments(bundle);
             }
         }
 
@@ -138,10 +144,8 @@ public class login extends AppCompatActivity implements
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
-
 //                Intent i = new Intent(login.this, MainActivity.class);
 //                startActivity(i);
-
             }
             else
                 {
@@ -193,7 +197,6 @@ public class login extends AppCompatActivity implements
                     }
                 });
     }
-
 
     // [END auth_with_google]
 
@@ -257,8 +260,9 @@ public class login extends AppCompatActivity implements
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
             findViewById(R.id.userName).setVisibility(View.VISIBLE);
-        }
-        else
+
+            }
+          else
         {
             mStatusTextView.setText(R.string.Not_logged_in);
             mDetailTextView.setText(null);
