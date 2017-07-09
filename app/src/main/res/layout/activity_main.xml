@@ -43,6 +43,7 @@
         android:layout_alignTop="@+id/sendButton"
         android:layout_toLeftOf="@+id/sendButton"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:hint="@string/type_message"/>
 
 </RelativeLayout>

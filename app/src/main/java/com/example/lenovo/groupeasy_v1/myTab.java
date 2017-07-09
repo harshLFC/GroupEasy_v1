@@ -84,6 +84,7 @@ public class myTab extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+
             Toast.makeText(this, "Settings selected", Toast.LENGTH_LONG
             )
                     .show();

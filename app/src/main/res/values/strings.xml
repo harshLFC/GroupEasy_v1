@@ -61,4 +61,5 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_test">test</string>
     <string name="create_groups">Create Groups</string>
+    <string name="type_message">Type a message...</string>
 </resources>

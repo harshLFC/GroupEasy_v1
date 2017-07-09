@@ -1,5 +1,7 @@
 package com.example.lenovo.groupeasy_v1;
 
+// Code for instant messaging
+
 import android.app.ActionBar;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -34,11 +36,7 @@ public class chatroom extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        Button sndBtn = findViewById(R.id.sendButton);
-//        EditText messageText = findViewById(R.id.messageText);
-//        ListView msgList = findViewById(R.id.messagesList);
-
-
+// Initialize gui elements
         Button sndBtn = (Button) findViewById(R.id.sendButton);
         final EditText msgText = (EditText) findViewById(R.id.messageText);
         ListView msgList = (ListView) findViewById(R.id.messagesList);
@@ -47,13 +45,14 @@ public class chatroom extends AppCompatActivity
         room_name = getIntent().getExtras().get("room_name").toString();
         setTitle(room_name);
 
+// Initialize the Firebase database reference in 'myRef'
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference("message");
 
 //        ActionBar actionBar = getActionBar();
 //        actionBar.setDisplayHomeAsUpEnabled(true);
 
-// On click listner for 'send' button
+// On click listener for 'send' button
         sndBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -74,12 +73,11 @@ public class chatroom extends AppCompatActivity
             }
         });
 
+// Initialize a Linked list called 'messages' and assign it to chatMessage class
         final List<chatMessage> messages = new LinkedList<>();
+// then add the ArrayAdapter 'adapter' to chatMessage
         final ArrayAdapter<chatMessage> adapter = new ArrayAdapter<chatMessage>
-                (
-//                this, android.R.class.layout.two_line_list_item, messages
-                this, android.R.layout.two_line_list_item, messages
-                )
+                (this, android.R.layout.two_line_list_item, messages)
         {
             @NonNull
             @Override
