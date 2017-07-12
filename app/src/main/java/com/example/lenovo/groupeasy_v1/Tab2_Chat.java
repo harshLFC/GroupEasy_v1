@@ -11,6 +11,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by lenovo on 26-06-2017.
@@ -100,7 +103,6 @@ public class Tab2_Chat extends Fragment {
                     fab2.setClickable(false);
                     isOpen= false;
                     fab2.setVisibility(View.GONE);
-
                 }
                 else{
                     fab2.startAnimation(fab_open);
@@ -149,6 +151,7 @@ public class Tab2_Chat extends Fragment {
         ArrayAdapter adapter = new ArrayAdapter<String>(mcontext,android.R.layout.simple_list_item_1,rooms);
 //final ListAdapter adapter = null;
         msgList.setAdapter(adapter);
+
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -164,7 +167,7 @@ public class Tab2_Chat extends Fragment {
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
             }
         });
 
@@ -173,7 +176,6 @@ public class Tab2_Chat extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent i = new Intent(mcontext,chatroom.class);
                 i.putExtra("room_name",((TextView)view).getText().toString());
-
                 startActivity(i);
             }
         });

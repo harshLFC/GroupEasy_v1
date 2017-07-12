@@ -62,4 +62,9 @@
     <string name="title_activity_test">test</string>
     <string name="create_groups">Create Groups</string>
     <string name="type_message">Type a message...</string>
+    <string name="create_poll">Create Poll</string>
+    <string name="save">SAVE</string>
+    <string name="event_name">Event Name</string>
+    <string name="location">location</string>
+    <string name="add_an_option">+ Add an option</string>
 </resources>

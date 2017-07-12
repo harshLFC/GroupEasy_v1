@@ -97,10 +97,7 @@
                 android:layout_alignBottom="@+id/view"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:adjustViewBounds="true"
-                android:background="@color/transparent"
-                android:backgroundTint="@color/colorAccent"
-                android:scaleType="fitXY"
+                android:scaleType="fitCenter"
                 android:src="@drawable/down_arrow" />
 
         </RelativeLayout>
