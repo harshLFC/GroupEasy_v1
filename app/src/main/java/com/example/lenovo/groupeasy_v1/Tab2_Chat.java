@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -139,27 +140,38 @@ public class Tab2_Chat extends Fragment {
                         @Override
                         public void onClick(View v) {
                             // code for creating new poll event
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                            builder.setTitle("Create a poll");
-                            builder.setMessage("Wabaduba dub dub !");
+                            FragmentManager manager = getFragmentManager();
+                            PollDialog dialog = new PollDialog();
+                            dialog.show(manager, "Message DIalog");
 
-                            View mView = getActivity().getLayoutInflater().inflate(R.layout.new_poll, null);
-                            EditText eventName = (EditText) mView.findViewById(R.id.event_name);
-                            EditText submit = (EditText) mView.findViewById(R.id.textView3);
+                            Log.i("TAG","djfhfhs");
 
-                            submit.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Toast.makeText(getActivity(), "Clicked Save", Toast.LENGTH_SHORT)
-                                            .show();
-                                }
-                            });
-
-                        builder.setView(mView);
-                        AlertDialog dialog = builder.create();
-                        builder.show();
-
-
+//
+//
+//                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//                            builder.setTitle("Create a poll");
+//                            builder.setMessage("Wabaduba dub dub !");
+//
+//                            View mView = getActivity().getLayoutInflater().inflate(R.layout.new_poll, null);
+//                            EditText eventName = (EditText) mView.findViewById(R.id.event_name);
+//                            EditText submit = (EditText) mView.findViewById(R.id.textView3);
+//
+//                            submit.setOnClickListener(new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                    Toast.makeText(getActivity(), "Clicked Save", Toast.LENGTH_SHORT)
+//                                            .show();
+//                                }
+//                            });
+//
+//                        builder.setView(mView);
+//                        AlertDialog dialog = builder.create();
+//                        builder.show();
+//
+//                            Toast.makeText(getActivity(), "Clicked Save", Toast.LENGTH_SHORT)
+//                                    .show();
+//                            CreatePollDialog createPollDialog = new CreatePollDialog();
+//                            createPollDialog.show(getFragmentManager(),"createPollDialog");
                         }
                     });
                 }
