@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -49,9 +50,7 @@ public class Tab2_Chat extends Fragment {
 
     //initilize elements
     private final List<String> rooms = new ArrayList<>();
-    private Button btn ;
     private ListView msgList;
-    private TextInputLayout bg;
     Animation fab_close,fab_open,fab_rotate,fab_rotate_rev;
     boolean isOpen = false;
 
@@ -62,9 +61,7 @@ public class Tab2_Chat extends Fragment {
         final View rootView = inflater.inflate(R.layout.chat_rooms, container, false);
 
 //find view by id of gui elements
-        btn = (Button) rootView.findViewById(R.id.buttonhide);
         msgList = (ListView) rootView.findViewById(R.id.lvToDoList);
-        bg = (TextInputLayout) rootView.findViewById(R.id.bg);
 
 //Create instance and connect to firebase database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -73,43 +70,41 @@ public class Tab2_Chat extends Fragment {
 //initialize animations and fab
         final FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab1);
         final FloatingActionButton fab2 = (FloatingActionButton) rootView.findViewById(R.id.fab2);
-        final Animation fab_close = AnimationUtils.loadAnimation(mcontext.getApplicationContext(),R.anim.fab_close);
-        final Animation fab_open = AnimationUtils.loadAnimation(mcontext.getApplicationContext(),R.anim.fab_open);
-        final Animation fab_rotate = AnimationUtils.loadAnimation(mcontext.getApplicationContext(),R.anim.fab_rotate);
-        final Animation fab_rotate_rev = AnimationUtils.loadAnimation(mcontext.getApplicationContext(),R.anim.fab_rotate_rev);
+        final FloatingActionButton fab3 = (FloatingActionButton) rootView.findViewById(R.id.fab3);
+        fab_close = AnimationUtils.loadAnimation(mcontext.getApplicationContext(),R.anim.fab_close);
+        fab_open = AnimationUtils.loadAnimation(mcontext.getApplicationContext(),R.anim.fab_open);
+        fab_rotate = AnimationUtils.loadAnimation(mcontext.getApplicationContext(),R.anim.fab_rotate);
+        fab_rotate_rev = AnimationUtils.loadAnimation(mcontext.getApplicationContext(),R.anim.fab_rotate_rev);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
 
-                final EditText edittext = (EditText) rootView.findViewById(R.id.edittext);
-
-//code for sending data to database on click
-                btn.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v) {
-                        Map<String,Object> map = new HashMap<>();
-                        map.put(edittext.getText().toString(),"");
-                        myRef.updateChildren(map);
-                    }
-                });
-
 //animation for fab
                 if (isOpen)
                 {
-
                     fab2.startAnimation(fab_close);
-                    fab.startAnimation(fab_rotate_rev);
                     fab2.setClickable(false);
-                    isOpen= false;
                     fab2.setVisibility(View.GONE);
+
+                    fab3.startAnimation(fab_close);
+                    fab3.setClickable(false);
+                    fab3.setVisibility(View.GONE);
+
+                    isOpen= false;
+                    fab.startAnimation(fab_rotate_rev);
                 }
                 else{
                     fab2.startAnimation(fab_open);
-                    fab.startAnimation(fab_rotate);
                     fab2.setClickable(true);
-                    isOpen= true;
                     fab2.setVisibility(View.VISIBLE);
+
+                    fab3.startAnimation(fab_open);
+                    fab3.setClickable(true);
+                    fab3.setVisibility(View.VISIBLE);
+
+                    isOpen= true;
+                    fab.startAnimation(fab_rotate);
 
 // Set on click listner for the second fab
                     fab2.setOnClickListener(new  View.OnClickListener(){
@@ -121,7 +116,7 @@ public class Tab2_Chat extends Fragment {
 // Set up the input
                             final EditText input = new EditText(mcontext);
 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-                            input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_TEXT);
+                            input.setInputType(InputType.TYPE_CLASS_TEXT);
                             builder.setView(input);
 // Set up the buttons
                             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -131,15 +126,40 @@ public class Tab2_Chat extends Fragment {
                                     Map<String,Object> map = new HashMap<>();
                                     map.put(input.getText().toString(),"");
                                     myRef.updateChildren(map);
-                                }
-                            });
+                                }});
                             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.cancel();
+                                }});
+                            builder.show();
+                        }});
+// on click listener for third fab
+                    fab3.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // code for creating new poll event
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                            builder.setTitle("Create a poll");
+                            builder.setMessage("Wabaduba dub dub !");
+
+                            View mView = getActivity().getLayoutInflater().inflate(R.layout.new_poll, null);
+                            EditText eventName = (EditText) mView.findViewById(R.id.event_name);
+                            EditText submit = (EditText) mView.findViewById(R.id.textView3);
+
+                            submit.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Toast.makeText(getActivity(), "Clicked Save", Toast.LENGTH_SHORT)
+                                            .show();
                                 }
                             });
-                            builder.show();
+
+                        builder.setView(mView);
+                        AlertDialog dialog = builder.create();
+                        builder.show();
+
+
                         }
                     });
                 }
