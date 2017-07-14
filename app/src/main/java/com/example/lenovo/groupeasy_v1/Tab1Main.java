@@ -1,6 +1,8 @@
 package com.example.lenovo.groupeasy_v1;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -12,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -27,6 +30,7 @@ public class Tab1Main extends Fragment {
     private Context mContext;
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
+    private String name;
 
     // [START declare_auth]
     private FirebaseAuth mAuth;
@@ -42,7 +46,9 @@ public class Tab1Main extends Fragment {
         mContext = getActivity();
         View rootView = inflater.inflate(R.layout.tab1_main, container, false);
 
-
+        if (name == null) {
+//            request_user_name();
+        }
 //        // Views
 //        mStatusTextView = (TextView) rootView.findViewById(R.id.status);
 //        mDetailTextView = (TextView) rootView.findViewById(R.id.detail);
@@ -70,6 +76,32 @@ public class Tab1Main extends Fragment {
 ////        Failed attempt
 
         return rootView;
+    }
+
+    private void request_user_name() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Enter User Name");
+
+        final EditText input_field = new EditText(getActivity());
+
+        builder.setView(input_field);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                name = input_field.getText().toString();
+
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                request_user_name();
+            }
+        });
+        builder.show();
     }
 }
 

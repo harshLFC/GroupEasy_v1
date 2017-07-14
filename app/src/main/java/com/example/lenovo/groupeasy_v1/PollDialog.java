@@ -29,7 +29,7 @@ public class PollDialog extends AppCompatDialogFragment {
         };
 
         return new AlertDialog.Builder(getActivity())
-                .setTitle("String")
+                .setTitle("Create Poll")
                 .setView(v)
                 .setPositiveButton(android.R.string.ok, listner)
                 .create();

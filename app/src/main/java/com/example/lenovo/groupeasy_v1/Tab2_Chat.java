@@ -61,6 +61,7 @@ public class Tab2_Chat extends Fragment {
         final Context mcontext = getActivity();
         final View rootView = inflater.inflate(R.layout.chat_rooms, container, false);
 
+
 //find view by id of gui elements
         msgList = (ListView) rootView.findViewById(R.id.lvToDoList);
 
@@ -76,6 +77,8 @@ public class Tab2_Chat extends Fragment {
         fab_open = AnimationUtils.loadAnimation(mcontext.getApplicationContext(),R.anim.fab_open);
         fab_rotate = AnimationUtils.loadAnimation(mcontext.getApplicationContext(),R.anim.fab_rotate);
         fab_rotate_rev = AnimationUtils.loadAnimation(mcontext.getApplicationContext(),R.anim.fab_rotate_rev);
+
+
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +126,7 @@ public class Tab2_Chat extends Fragment {
                             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+// Push data from inputText to firebase database ref via the 'put' method
                                     String mText = input.getText().toString();
                                     Map<String,Object> map = new HashMap<>();
                                     map.put(input.getText().toString(),"");
@@ -139,6 +143,7 @@ public class Tab2_Chat extends Fragment {
                     fab3.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+// code for displaying dialogFragment created in external PollDialog class
                             // code for creating new poll event
                             FragmentManager manager = getFragmentManager();
                             PollDialog dialog = new PollDialog();

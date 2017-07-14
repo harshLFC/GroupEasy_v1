@@ -1,6 +1,8 @@
 package com.example.lenovo.groupeasy_v1;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,6 +56,7 @@ public class login extends AppCompatActivity implements
     private TextView userName;
     private TextView eMail;
     private ImageView userPhoto;
+    private String name;
 
 
     @Override
@@ -213,8 +217,13 @@ public class login extends AppCompatActivity implements
 
     private void goToChat()
     {
-        Intent i = new Intent(login.this, myTab.class);
-        startActivity(i);
+        if (name == null) {
+            request_user_name();
+        }
+        else {
+            Intent i = new Intent(login.this, myTab.class);
+            startActivity(i);
+        }
 //        // Firebase sign out
 //        mAuth.signOut();
 //
@@ -226,6 +235,30 @@ public class login extends AppCompatActivity implements
 //                        updateUI(null);
 //                    }
 //                });
+    }
+
+    private void request_user_name() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Enter User Name");
+
+        final EditText input_field = new EditText(this);
+
+        builder.setView(input_field);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                name = input_field.getText().toString();
+
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
     }
 
     private void revokeAccess()
