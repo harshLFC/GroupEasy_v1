@@ -67,4 +67,5 @@
     <string name="event_name">Event Name</string>
     <string name="location">location</string>
     <string name="add_an_option">+ Add an option</string>
+    <string name="log_out">Log out</string>
 </resources>

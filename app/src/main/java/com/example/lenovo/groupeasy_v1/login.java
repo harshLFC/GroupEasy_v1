@@ -128,6 +128,12 @@ public class login extends AppCompatActivity implements
 //                bundle.putString(uid,"From Activity");
 //                Fragmentclass frag = new Fragmentclass;
 //                frag.setArguments(bundle);
+
+                Toast.makeText(this,"You are now logged in "+mAuth.getCurrentUser().getDisplayName(),Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(login.this, myTab.class);
+                startActivity(i);
+                finish();
+
             }
         }
 

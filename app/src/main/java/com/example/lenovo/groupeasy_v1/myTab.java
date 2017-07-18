@@ -1,5 +1,6 @@
 package com.example.lenovo.groupeasy_v1;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,6 +20,9 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class myTab extends AppCompatActivity {
 
@@ -42,6 +46,7 @@ public class myTab extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab);
 
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
@@ -64,6 +69,7 @@ public class myTab extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
 
     }
 
@@ -89,6 +95,17 @@ public class myTab extends AppCompatActivity {
             )
                     .show();
             return true;
+        }
+        else if (id == R.id.log_out){
+            FirebaseAuth mAuth;
+            FirebaseAuth.getInstance().signOut();
+            Toast.makeText(this,"You are now logged Out ",Toast.LENGTH_LONG).show();
+
+
+            Intent i = new Intent(this, login.class);
+            startActivity(i);
+//            finish();
+
         }
 
         return super.onOptionsItemSelected(item);

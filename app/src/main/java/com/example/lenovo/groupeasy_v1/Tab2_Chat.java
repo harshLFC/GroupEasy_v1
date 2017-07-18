@@ -57,7 +57,7 @@ public class Tab2_Chat extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             final Bundle savedInstanceState) {
         final Context mcontext = getActivity();
         final View rootView = inflater.inflate(R.layout.chat_rooms, container, false);
 
@@ -78,7 +78,8 @@ public class Tab2_Chat extends Fragment {
         fab_rotate = AnimationUtils.loadAnimation(mcontext.getApplicationContext(),R.anim.fab_rotate);
         fab_rotate_rev = AnimationUtils.loadAnimation(mcontext.getApplicationContext(),R.anim.fab_rotate_rev);
 
-
+        Map<String,Object> map = new HashMap<>();
+        myRef.updateChildren(map);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,6 +190,8 @@ public class Tab2_Chat extends Fragment {
 //final ListAdapter adapter = null;
         msgList.setAdapter(adapter);
 
+
+
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -201,12 +204,29 @@ public class Tab2_Chat extends Fragment {
                 }
                 rooms.clear();
                 rooms.addAll(set);
+
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
             }
+
+
         });
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
         msgList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
