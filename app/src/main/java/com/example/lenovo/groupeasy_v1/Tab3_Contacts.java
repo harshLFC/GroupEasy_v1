@@ -1,128 +1,62 @@
 package com.example.lenovo.groupeasy_v1;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputLayout;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 public class Tab3_Contacts extends Fragment {
-    // variables
-    private final List<chatMessage> messages = new LinkedList<>();
     private Context mContext;
+    private View rootView;
+    ListView contactList;
+    Button clickMe;
+    ArrayAdapter<String> arrayAdapter;
+    TextView textView;
 
     //on create
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mContext = getActivity();
-        View rootView = inflater.inflate(R.layout.activity_main, container, false);
+        rootView = inflater.inflate(R.layout.contacts, container, false);
 
 //       Referancing ui elements
-        Button sndBtn = (Button) rootView.findViewById(R.id.sendButton);
-        final EditText msgText = (EditText) rootView.findViewById(R.id.messageText);
-        ListView msgList = (ListView) rootView.findViewById(R.id.messagesList);
+        arrayAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), R.layout.support_simple_spinner_dropdown_item);
+        //contactList = (ListView) rootView.findViewById(R.id.contacts_list);
+        //contactList.setAdapter(arrayAdapter);
 
-//        FIrebase datatbase ref
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference myRef = database.getReference("message");
+        textView = (TextView) rootView.findViewById(R.id.editTextContax) ;
+        clickMe = (Button) rootView.findViewById(R.id.click_to_load);
+//
+        clickMe.setOnClickListener(new View.OnClickListener(){
 
-        sndBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-//                todo change name
-                chatMessage chat = new chatMessage("harsh", msgText.getText().toString());
-                myRef.push().setValue(chat);
-                msgText.setText("");
-            }
-        });
-// adapter
-        final ArrayAdapter<chatMessage> adapter = new ArrayAdapter<chatMessage>(
-                mContext, android.R.layout.two_line_list_item, messages
-        )
-// Code to Populate List view
-        {
-            @NonNull
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                if (convertView == null) {
-                    convertView = inflater.inflate(android.R.layout.two_line_list_item, parent, false);
+            public void onClick(View v) {
+                Cursor phones = mContext.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null,null, null);
+                while (phones.moveToNext())
+                {
+                    //String name=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                    String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+
+                    //arrayAdapter.add(phoneNumber);
+                    textView.setText(phoneNumber);
+
                 }
-                chatMessage chat = messages.get(position);
-                ((TextView) convertView.findViewById(android.R.id.text1)).setText(chat.getName());
-                ((TextView) convertView.findViewById(android.R.id.text2)).setText(chat.getMessage());
-                return convertView;
-            }
-        };
+                phones.close();
 
-        msgList.setAdapter(adapter);
-        myRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                chatMessage chat = dataSnapshot.getValue(chatMessage.class);
-                messages.add(chat);
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                chatMessage chat = dataSnapshot.getValue(chatMessage.class);
-//                        messages.add(chat);
-                messages.remove(chat);
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
         return rootView;
     }
+
+
 }

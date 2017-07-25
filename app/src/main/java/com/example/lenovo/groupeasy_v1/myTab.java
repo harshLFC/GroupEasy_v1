@@ -1,5 +1,7 @@
 package com.example.lenovo.groupeasy_v1;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -12,17 +14,22 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class myTab extends AppCompatActivity {
 
@@ -107,9 +114,38 @@ public class myTab extends AppCompatActivity {
 //            finish();
 
         }
+        else if (id == R.id.newgroup){
+
+// Set up an Alert dialog builder
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Create new Group");
+// Set up the input
+            final EditText input = new EditText(this);
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+            input.setInputType(InputType.TYPE_CLASS_TEXT);
+            builder.setView(input);
+// Set up the buttons
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+// Push data from inputText to firebase database ref via the 'put' method
+                    String mText = input.getText().toString();
+                    Map<String,Object> map = new HashMap<>();
+                    map.put(input.getText().toString(),"");
+//                    myRef.updateChildren(map);
+                }});
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }});
+            builder.show();
+        }
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to

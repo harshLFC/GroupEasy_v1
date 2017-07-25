@@ -294,7 +294,6 @@ public class login extends AppCompatActivity implements
             mStatusTextView.setText(getString(R.string.google_status_fmt, user.getEmail()));
             mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()) );
             userName.setText(getString(R.string.google_status_fmt, user.getDisplayName()));
-//            mDetailTextView.setText("Firebase User: {user.getUid(}");
 
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
@@ -308,6 +307,7 @@ public class login extends AppCompatActivity implements
 
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
+            userName.setVisibility(View.GONE);
         }
     }
 

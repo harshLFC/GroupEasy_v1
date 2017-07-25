@@ -49,6 +49,9 @@ import static android.content.ContentValues.TAG;
 
 public class Tab2_Chat extends Fragment {
 
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    final DatabaseReference myRef = database.getReference("Groups");
+
     //initilize elements
     private final List<String> rooms = new ArrayList<>();
     private ListView msgList;
@@ -66,8 +69,6 @@ public class Tab2_Chat extends Fragment {
         msgList = (ListView) rootView.findViewById(R.id.lvToDoList);
 
 //Create instance and connect to firebase database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference myRef = database.getReference("Groups");
 
 //initialize animations and fab
         final FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab1);
@@ -214,7 +215,7 @@ public class Tab2_Chat extends Fragment {
 
         });
 
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+       /* myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -225,7 +226,7 @@ public class Tab2_Chat extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        });*/
 
 
         msgList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -239,4 +240,5 @@ public class Tab2_Chat extends Fragment {
 
         return rootView;
     }
+
 }

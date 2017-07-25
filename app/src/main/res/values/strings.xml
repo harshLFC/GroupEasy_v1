@@ -47,7 +47,7 @@
     <!-- Messages for the Rest API activity -->
     <string name="connections_fmt">Connections: %1$s</string>
     <string name="msg_contacts_failed">Get contacts failed.</string>
-    <string name="google_status_fmt">Google User: %s</string>
+    <string name="google_status_fmt">Google User Name: %s</string>
     <string name="firebase_status_fmt">Firebase User: %s</string>
     <string name="google_title_text">Google Sign In</string>
     <string name="desc_firebase_lockup">Firebase logo and name</string>
@@ -68,4 +68,8 @@
     <string name="location">location</string>
     <string name="add_an_option">+ Add an option</string>
     <string name="log_out">Log out</string>
+    <string name="new_group">New group</string>
+    <string name="click_to_load">CLick to load</string>
+    <string name="name">Name</string>
+    <string name="phone">Phone</string>
 </resources>
