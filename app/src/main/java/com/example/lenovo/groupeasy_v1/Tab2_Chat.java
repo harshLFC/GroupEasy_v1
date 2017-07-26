@@ -52,6 +52,8 @@ public class Tab2_Chat extends Fragment {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     final DatabaseReference myRef = database.getReference("Groups");
 
+
+
     //initilize elements
     private final List<String> rooms = new ArrayList<>();
     private ListView msgList;
@@ -63,10 +65,12 @@ public class Tab2_Chat extends Fragment {
                              final Bundle savedInstanceState) {
         final Context mcontext = getActivity();
         final View rootView = inflater.inflate(R.layout.chat_rooms, container, false);
-
-
+//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+//        database.setPersistenceEnabled(true);
 //find view by id of gui elements
         msgList = (ListView) rootView.findViewById(R.id.lvToDoList);
+
+
 
 //Create instance and connect to firebase database
 
@@ -191,7 +195,7 @@ public class Tab2_Chat extends Fragment {
 //final ListAdapter adapter = null;
         msgList.setAdapter(adapter);
 
-
+// code for updating list from firebase database
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
