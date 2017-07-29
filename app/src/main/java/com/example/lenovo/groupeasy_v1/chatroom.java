@@ -75,6 +75,10 @@ public class chatroom extends AppCompatActivity
 
 // Initialize a Linked list called 'messages' and assign it to chatMessage class
         final List<chatMessage> messages = new LinkedList<>();
+        for (int i = 0;i<messages.size();i++)
+        {
+            System.out.println(" name "+messages.get(i).getMessage());
+        }
 // then add the ArrayAdapter 'adapter' to chatMessage
         final ArrayAdapter<chatMessage> adapter = new ArrayAdapter<chatMessage>
                 (this, android.R.layout.two_line_list_item, messages)
