@@ -10,10 +10,6 @@ public class chatMessage {
     String name;
     String message;
 
-    public chatMessage() {
-
-    }
-
     public chatMessage(String name, String message) {
         this.name = name;
         this.message = message;
