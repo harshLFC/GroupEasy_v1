@@ -50,9 +50,7 @@ import static android.content.ContentValues.TAG;
 public class Tab2_Chat extends Fragment {
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    final DatabaseReference myRef = database.getReference("Groups");
-
-
+    final DatabaseReference myRef = database.getReference("allgroups");
 
     //initilize elements
     private final List<String> rooms = new ArrayList<>();
@@ -65,16 +63,17 @@ public class Tab2_Chat extends Fragment {
                              final Bundle savedInstanceState) {
         final Context mcontext = getActivity();
         final View rootView = inflater.inflate(R.layout.chat_rooms, container, false);
-//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-//        database.setPersistenceEnabled(true);
-//find view by id of gui elements
+
+                /*Tried to solve the data retrival bug but this snippet keeps crashing
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        database.setPersistenceEnabled(true);*/
+
+//Initialize Ui elements
         msgList = (ListView) rootView.findViewById(R.id.lvToDoList);
-
-
 
 //Create instance and connect to firebase database
 
-//initialize animations and fab
+//Declare and initialize animations and fab
         final FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab1);
         final FloatingActionButton fab2 = (FloatingActionButton) rootView.findViewById(R.id.fab2);
         final FloatingActionButton fab3 = (FloatingActionButton) rootView.findViewById(R.id.fab3);
@@ -133,10 +132,18 @@ public class Tab2_Chat extends Fragment {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 // Push data from inputText to firebase database ref via the 'put' method
+
                                     String mText = input.getText().toString();
-                                    Map<String,Object> map = new HashMap<>();
-                                    map.put(input.getText().toString(),"");
-                                    myRef.updateChildren(map);
+//                                    Map<String,Object> map = new HashMap<>();
+//                                    map.put(input.getText().toString(),"");
+
+                                    chatRoomPOJO chatRoomPOJO = new chatRoomPOJO(mText, null, null, null);
+
+                                    myRef.push().setValue(chatRoomPOJO);
+
+
+//                                    myRef.updateChildren(map);
+
                                 }});
                             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                 @Override
@@ -157,32 +164,6 @@ public class Tab2_Chat extends Fragment {
 
                             Log.i("TAG","djfhfhs");
 
-//
-//
-//                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//                            builder.setTitle("Create a poll");
-//                            builder.setMessage("Wabaduba dub dub !");
-//
-//                            View mView = getActivity().getLayoutInflater().inflate(R.layout.new_poll, null);
-//                            EditText eventName = (EditText) mView.findViewById(R.id.event_name);
-//                            EditText submit = (EditText) mView.findViewById(R.id.textView3);
-//
-//                            submit.setOnClickListener(new View.OnClickListener() {
-//                                @Override
-//                                public void onClick(View v) {
-//                                    Toast.makeText(getActivity(), "Clicked Save", Toast.LENGTH_SHORT)
-//                                            .show();
-//                                }
-//                            });
-//
-//                        builder.setView(mView);
-//                        AlertDialog dialog = builder.create();
-//                        builder.show();
-//
-//                            Toast.makeText(getActivity(), "Clicked Save", Toast.LENGTH_SHORT)
-//                                    .show();
-//                            CreatePollDialog createPollDialog = new CreatePollDialog();
-//                            createPollDialog.show(getFragmentManager(),"createPollDialog");
                         }
                     });
                 }
@@ -201,12 +182,14 @@ public class Tab2_Chat extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                // using temporary hashSet to avoid duplicates
                 Set<String> set = new HashSet<String>();
                 Iterator i = dataSnapshot.getChildren().iterator();
 
                 while (i.hasNext()){
                     set.add(((DataSnapshot)i.next()).getKey());
                 }
+
                 rooms.clear();
                 rooms.addAll(set);
 

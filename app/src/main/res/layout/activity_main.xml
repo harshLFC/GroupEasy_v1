@@ -19,10 +19,17 @@
         android:id="@+id/footer">
     </LinearLayout!-->
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
     <ListView
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_width="wrap_content"
+        android:layout_height="407dp"
         android:id="@+id/messagesList" />
+
+
+    </LinearLayout>
 
     <Button
         android:text="Send"

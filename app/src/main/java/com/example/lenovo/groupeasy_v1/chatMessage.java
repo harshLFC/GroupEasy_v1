@@ -5,23 +5,23 @@ package com.example.lenovo.groupeasy_v1;
  */
 
 public class chatMessage {
-    String name;
-    String message;
+    String phonenumber;
+    String messagetxt;
 
     public chatMessage() {
-
+// Default constructor required for calls to DataSnapshot.getValue(chatMessage.class)
     }
 
-    public chatMessage(String name, String message) {
-        this.name = name;
-        this.message = message;
+    public chatMessage(String phonenumber, String messagetxt) {
+        this.phonenumber = phonenumber;
+        this.messagetxt = messagetxt;
     }
 
     public String getName() {
-        return name;
+        return phonenumber;
     }
 
     public String getMessage() {
-        return message;
+        return messagetxt;
     }
 }

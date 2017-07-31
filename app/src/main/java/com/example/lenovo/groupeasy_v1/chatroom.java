@@ -24,16 +24,23 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class chatroom extends AppCompatActivity
 {
     private String room_name;
+    private String user_name;
+    private String temp_key;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        //set layout for activity
         setContentView(R.layout.activity_main);
 
 // Initialize gui elements
@@ -45,12 +52,17 @@ public class chatroom extends AppCompatActivity
         room_name = getIntent().getExtras().get("room_name").toString();
         setTitle(room_name);
 
+
 // Initialize the Firebase database reference in 'myRef'
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference myRef = database.getReference("message");
+        final DatabaseReference myRef = database.getReference("allgroups").child("0").child("messages");
+        final DatabaseReference root = database.getReference("allgroups").child("0").child("messages");
 
 //        ActionBar actionBar = getActionBar();
 //        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        user_name = database.getReference("allgroups").child("messages").child("phonenumber").toString();
+        System.out.println("this is the username"+user_name);
 
 // On click listener for 'send' button
         sndBtn.setOnClickListener(new View.OnClickListener()
@@ -64,9 +76,20 @@ public class chatroom extends AppCompatActivity
                 }
 // else the entered string will be pushed to the firebase database reference
                 else {
+                    Map<String,Object> map1 = new HashMap<String,Object>();
+                    temp_key = root.push().getKey();
+                    root.updateChildren(map1);
+
+                    DatabaseReference message_root = root.child(temp_key);
+                    Map<String,Object> map2 = new HashMap<String,Object>();
+                    map2.put("phonenumber",user_name);
+                    map2.put("message",msgText.getText().toString());
+                    message_root.updateChildren(map2);
+
+
 //                    todo change name
-                    chatMessage chat = new chatMessage("harsh", msgText.getText().toString());
-                    myRef.push().setValue(chat);
+//                    chatMessage chat = new chatMessage("harsh", msgText.getText().toString());
+//                    myRef.push().setValue(chat);
                     msgText.setText("");
 
                 }
