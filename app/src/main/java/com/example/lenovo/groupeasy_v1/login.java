@@ -43,6 +43,7 @@ public class login extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {
 
+    //Creating sign in flow using firebase Open source Ui
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
 

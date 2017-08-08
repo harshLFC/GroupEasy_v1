@@ -2,11 +2,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.lenovo.groupeasy_v1.myTab">
-    <item
-        android:id="@+id/newgroup"
-        android:orderInCategory="100"
-        android:title="@string/new_group"
-        app:showAsAction="never" />
 
     <item
         android:id="@+id/log_out"

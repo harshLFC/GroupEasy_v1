@@ -1,16 +1,15 @@
 package com.example.lenovo.groupeasy_v1;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,17 +19,16 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -39,7 +37,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 import static android.content.ContentValues.TAG;
 
@@ -49,27 +49,36 @@ import static android.content.ContentValues.TAG;
 
 public class Tab2_Chat extends Fragment {
 
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    final DatabaseReference myRef = database.getReference("allgroups");
-
     //initilize elements
     private final List<String> rooms = new ArrayList<>();
-    private ListView msgList;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    final DatabaseReference myRef = database.getReference();
+    final DatabaseReference myRef1 = database.getReference("Groups");
+    //    private ListView msgList;
     Animation fab_close,fab_open,fab_rotate,fab_rotate_rev;
     boolean isOpen = false;
+
+    private RecyclerView mGroupRecyclerView;
+    private GroupAdapter mGroupAdapter;
+    private List<Group> mLstGroups;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
         final Context mcontext = getActivity();
         final View rootView = inflater.inflate(R.layout.chat_rooms, container, false);
+        mLstGroups = new ArrayList<>();
+
+        mGroupAdapter = new GroupAdapter(mLstGroups);
+        mGroupRecyclerView = (RecyclerView) rootView.findViewById(R.id.groupRecyclerView);
+        mGroupRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mGroupRecyclerView.setAdapter(mGroupAdapter);
 
                 /*Tried to solve the data retrival bug but this snippet keeps crashing
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         database.setPersistenceEnabled(true);*/
 
 //Initialize Ui elements
-        msgList = (ListView) rootView.findViewById(R.id.lvToDoList);
 
 //Create instance and connect to firebase database
 
@@ -82,8 +91,8 @@ public class Tab2_Chat extends Fragment {
         fab_rotate = AnimationUtils.loadAnimation(mcontext.getApplicationContext(),R.anim.fab_rotate);
         fab_rotate_rev = AnimationUtils.loadAnimation(mcontext.getApplicationContext(),R.anim.fab_rotate_rev);
 
-        Map<String,Object> map = new HashMap<>();
-        myRef.updateChildren(map);
+//        Map<String,Object> map = new HashMap<>();
+//        myRef.updateChildren(map);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,10 +146,9 @@ public class Tab2_Chat extends Fragment {
 //                                    Map<String,Object> map = new HashMap<>();
 //                                    map.put(input.getText().toString(),"");
 
-                                    chatRoomPOJO chatRoomPOJO = new chatRoomPOJO(mText, null, null, null);
+                                    chatPOJO chatPOJO = new chatPOJO(mText, "0");
 
-                                    myRef.push().setValue(chatRoomPOJO);
-
+                                    myRef.push().setValue(chatPOJO);
 
 //                                    myRef.updateChildren(map);
 
@@ -172,60 +180,82 @@ public class Tab2_Chat extends Fragment {
             }
         });
 
-        ArrayAdapter adapter = new ArrayAdapter<String>(mcontext,android.R.layout.simple_list_item_1,rooms);
+
+//        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,rooms);
 //final ListAdapter adapter = null;
-        msgList.setAdapter(adapter);
+//        mGroupRecyclerView.setAdapter(adapter);
 
 // code for updating list from firebase database
 
-        myRef.addValueEventListener(new ValueEventListener() {
+//        Query mquery = myRef.orderByChild("name");
+        DatabaseReference groupRef = myRef.child("Groups").child("");
+        myRef1.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                // using temporary hashSet to avoid duplicates
-                Set<String> set = new HashSet<String>();
-                Iterator i = dataSnapshot.getChildren().iterator();
-
-                while (i.hasNext()){
-                    set.add(((DataSnapshot)i.next()).getKey());
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                //take values from map and fill in a group object
+                //add group object to mLstGroups
+                for (Object o : map.values()) {
+                    HashMap<String, Object> groupMap = (HashMap<String, Object>) o;
+                    mLstGroups.add(new Group((String) groupMap.get("Key for groupname")));
+                    mGroupAdapter.notifyItemInserted(mLstGroups.size() - 1);
+                    // this will insert an item in RecyclerView (listView)
                 }
+            }
 
-                rooms.clear();
-                rooms.addAll(set);
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
             }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+
             }
-
-
         });
 
-       /* myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+//     myRef1.addListenerForSingleValueEvent(new ValueEventListener() {
+//         @Override
+//         public void onDataChange(DataSnapshot dataSnapshot) {
+//             for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+////                 chatPOJO chatpojo = snapshot.getValue(chatPOJO.class);
+////                 System.out.println(chatpojo.groupname);
+//             }
+//         }
+//
+//         @Override
+//         public void onCancelled(DatabaseError databaseError) {
+//
+//         }
+//     });
 
 
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });*/
-
-
-        msgList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(mcontext,chatroom.class);
-                i.putExtra("room_name",((TextView)view).getText().toString());
-                startActivity(i);
-            }
-        });
+//        msgList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Intent i = new Intent(mcontext,chatroom.class);
+//                i.putExtra("room_name",((TextView)view).getText().toString());
+//                startActivity(i);
+//            }
+//        });
 
         return rootView;
     }
+
+    private void i_dont_know_how_to_code_so_im_just_typing_random_shit() {
+        System.out.print("What the fuck");
+    }
+
 
 }

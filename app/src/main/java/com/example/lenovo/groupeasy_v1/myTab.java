@@ -100,7 +100,7 @@ public class myTab extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
 
-            Toast.makeText(this, "Settings selected", Toast.LENGTH_LONG
+            Toast.makeText(this, "Under Construction", Toast.LENGTH_LONG
             )
                     .show();
             return true;
@@ -116,33 +116,33 @@ public class myTab extends AppCompatActivity {
 //            finish();
 
         }
-        else if (id == R.id.newgroup){
-
-// Set up an Alert dialog builder
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Create new Group");
-// Set up the input
-            final EditText input = new EditText(this);
-// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-            input.setInputType(InputType.TYPE_CLASS_TEXT);
-            builder.setView(input);
-// Set up the buttons
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-// Push data from inputText to firebase database ref via the 'put' method
-                    String mText = input.getText().toString();
-                    Map<String,Object> map = new HashMap<>();
-                    map.put(input.getText().toString(),"");
-//                    myRef.updateChildren(map);
-                }});
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }});
-            builder.show();
-        }
+//        else if (id == R.id.newgroup){
+//
+//// Set up an Alert dialog builder
+//            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//            builder.setTitle("Create new Group");
+//// Set up the input
+//            final EditText input = new EditText(this);
+//// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+//            input.setInputType(InputType.TYPE_CLASS_TEXT);
+//            builder.setView(input);
+//// Set up the buttons
+//            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//// Push data from inputText to firebase database ref via the 'put' method
+//                    String mText = input.getText().toString();
+//                    Map<String,Object> map = new HashMap<>();
+//                    map.put(input.getText().toString(),"");
+////                    myRef.updateChildren(map);
+//                }});
+//            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    dialog.cancel();
+//                }});
+//            builder.show();
+//        }
 
         return super.onOptionsItemSelected(item);
     }

@@ -76,15 +76,15 @@ public class chatroom extends AppCompatActivity
                 }
 // else the entered string will be pushed to the firebase database reference
                 else {
-                    Map<String,Object> map1 = new HashMap<String,Object>();
+//                    Map<String,Object> map1 = new HashMap<String,Object>();
                     temp_key = root.push().getKey();
-                    root.updateChildren(map1);
+//                    root.updateChildren(map1);
 
                     DatabaseReference message_root = root.child(temp_key);
-                    Map<String,Object> map2 = new HashMap<String,Object>();
-                    map2.put("phonenumber",user_name);
-                    map2.put("message",msgText.getText().toString());
-                    message_root.updateChildren(map2);
+//                    Map<String,Object> map2 = new HashMap<String,Object>();
+//                    map2.put("phonenumber",user_name);
+//                    map2.put("message",msgText.getText().toString());
+//                    message_root.updateChildren(map2);
 
 
 //                    todo change name
@@ -128,9 +128,9 @@ public class chatroom extends AppCompatActivity
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s)
             {
-                chatMessage chat = dataSnapshot.getValue(chatMessage.class);
-                messages.add(chat);
-                adapter.notifyDataSetChanged();
+//                chatMessage chat = dataSnapshot.getValue(chatMessage.class);
+//                messages.add(chat);
+//                adapter.notifyDataSetChanged();
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s)
@@ -140,10 +140,10 @@ public class chatroom extends AppCompatActivity
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot)
             {
-                chatMessage chat = dataSnapshot.getValue(chatMessage.class);
-//                        messages.add(chat);
-                messages.remove(chat);
-                adapter.notifyDataSetChanged();
+//                chatMessage chat = dataSnapshot.getValue(chatMessage.class);
+////                        messages.add(chat);
+//                messages.remove(chat);
+//                adapter.notifyDataSetChanged();
             }
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s)
